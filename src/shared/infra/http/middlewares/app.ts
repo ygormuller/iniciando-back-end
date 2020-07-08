@@ -10,7 +10,7 @@ import routes from '@shared/infra/http/routes';
 
 
 import '@shared/infra/typeorm';
-import '@shared/container';
+import '@shared/container/providers/MailProvider';
 import '@modules/users/providers';
 
 
