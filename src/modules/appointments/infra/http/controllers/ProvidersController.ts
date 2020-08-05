@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
-import ListProvidersService from '@modules/appointments/services/ListProvidersServices';
+import ListProvidersService from '@modules/appointments/services/ListProvidersService';
 //import { classToClass } from 'class-transformer';
 
 export default class ProvidersController {

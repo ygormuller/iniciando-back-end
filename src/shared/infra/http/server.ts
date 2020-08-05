@@ -1,54 +1,44 @@
 import 'reflect-metadata';
-
-import app from '@shared/infra/http/middlewares/app';
-
-/*import 'reflect-metadata';
+import 'dotenv/config';
 
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
+import { errors } from 'celebrate';
 import 'express-async-errors';
 
 import uploadConfig from '@config/upload';
 import AppError from '@shared/errors/AppError';
-import routes from '@shared/infra/http/routes';
-
+import rateLimiter from './middlewares/rateLimiter';
+import routes from './routes';
 
 import '@shared/infra/typeorm';
 import '@shared/container';
 import '@modules/users/providers';
-//import './providers';
-
 
 const app = express();
 
+app.use(rateLimiter);
 app.use(cors());
 app.use(express.json());
-app.use('/files', express.static(uploadConfig.uploadsFolder)); //vizualizar no navegador
+app.use('/files', express.static(uploadConfig.uploadsFolder));
 app.use(routes);
 
-app.use(( err: Error, request: Request, response: Response, next: NextFunction) => {
+app.use(errors());
+
+app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
   if (err instanceof AppError) {
-    return response.status(err.statusCode).json({
-      status: 'error',
-      message: err.message,
-    });
+    return response
+      .status(err.statusCode)
+      .json({ status: 'error', message: err.message });
   }
 
-  console.log(err);
-    return response.status(500).json({
-      status: 'error',
-      message: 'Internal server error',
-    });
-  },
-);
+  console.error(err);
 
-export default app;*/
-
-
-import '@shared/infra/typeorm';
-import '@modules/users/providers';
-
-
+  return response.status(500).json({
+    status: 'error',
+    message: 'Internal server error',
+  });
+});
 
 app.listen(3333, () => {
   console.log('🚀 Server started on port 3333!');
